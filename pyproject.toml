@@ -1,0 +1,20 @@
+[project]
+name = "london-crime-analysis"
+version = "0.1.0"
+description = "A data analysis project exploring crime patterns across London boroughs. Uses the London Crime Dataset (2008-2016) to identify trends, high-risk areas, and correlations with socio-economic factors through statistical analysis and interactive visualizations."
+authors = [{name = "Babak Nikfar", email = "nikfar@nikintel.com"}]
+dependencies = [
+    "pandas",
+    "numpy",
+    "matplotlib", 
+    "seaborn",
+    "pyyaml",
+    "jupyter",
+    "pytest",
+    "logging",
+]
+requires-python = ">=3.12"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
