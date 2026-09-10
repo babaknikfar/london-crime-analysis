@@ -1,9 +1,10 @@
 """
 Logging configuration for London Crime Analysis project.
 
-This module provides a centralized logging setup that reads
-configuration from config.yaml and exposes a get_logger() helper
-for consistent logging across all project modules.
+This module provides a centralized, reusable logging setup.
+It is intentionally decoupled from the config module — settings
+are passed in as parameters so that this module can be imported
+from anywhere without circular-import issues.
 """
 
 import logging
@@ -12,58 +13,48 @@ from pathlib import Path
 from typing import Optional
 
 
-# Module-level flag to ensure logging is configured only once
 _LOGGING_CONFIGURED = False
 
-def _configure_logging() -> None:
+
+def configure_logging(
+    log_file: Path,
+    level: str = "INFO",
+    log_format: str = "%(asctime)s | %(name)s | %(levelname)s | %(message)s",
+) -> None:
     """
     Configure the root logger with console and file handlers.
-    
-    Reads settings from the global config object. This function is
-    idempotent — calling it multiple times has no additional effect.
-    """
-    from london_crime.config import config
 
+    Args:
+        log_file: Absolute path to the log file. Parent directories
+                  will be created if they don't exist.
+        level: Log level name (e.g. "INFO", "DEBUG"). Defaults to "INFO".
+        log_format: Format string for log records.
+
+    This function is idempotent — calling it multiple times has no
+    additional effect.
+    """
     global _LOGGING_CONFIGURED
 
     if _LOGGING_CONFIGURED:
         return
 
-    # --- Read settings from config ---
-    log_level_name: str = config.logging.get("level", "INFO")
-    log_format: str = config.logging.get(
-        "format",
-        "%(asctime)s | %(name)s | %(levelname)s | %(message)s",
-    )
-    log_file_relative: str = config.logging.get("file", "logs/london_crime.log")
-
-    # Resolve the log file path relative to project root
-    log_file: Path = config.paths.project_root / log_file_relative
     log_file.parent.mkdir(parents=True, exist_ok=True)
 
-    # Convert string level name (e.g. "INFO") to logging constant
-    log_level: int = getattr(logging, log_level_name.upper(), logging.INFO)
+    log_level: int = getattr(logging, level.upper(), logging.INFO)
 
-    # --- Build formatter ---
     formatter = logging.Formatter(log_format)
 
-    # --- Build console handler ---
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(log_level)
     console_handler.setFormatter(formatter)
 
-    # --- Build file handler ---
     file_handler = logging.FileHandler(log_file, encoding="utf-8")
     file_handler.setLevel(log_level)
     file_handler.setFormatter(formatter)
 
-    # --- Configure root logger ---
     root_logger = logging.getLogger()
     root_logger.setLevel(log_level)
-
-    # Remove any pre-existing handlers to avoid duplicate messages
     root_logger.handlers.clear()
-
     root_logger.addHandler(console_handler)
     root_logger.addHandler(file_handler)
 
@@ -72,15 +63,16 @@ def _configure_logging() -> None:
 
 def get_logger(name: Optional[str] = None) -> logging.Logger:
     """
-    Retrieve a configured logger.
-    
+    Retrieve a logger by name.
+
+    Note: The root logger must be configured separately via
+    configure_logging() before logs will appear in console/file.
+
     Args:
         name: Logger name — typically pass __name__ from the calling module.
               If None, returns the root logger.
-    
-    Returns:
-        A logging.Logger instance configured with console and file handlers.
-    """
 
-    _configure_logging()
+    Returns:
+        A logging.Logger instance.
+    """
     return logging.getLogger(name)

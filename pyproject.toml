@@ -1,20 +1,57 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "london-crime-analysis"
 version = "0.1.0"
-description = "A data analysis project exploring crime patterns across London boroughs. Uses the London Crime Dataset (2008-2016) to identify trends, high-risk areas, and correlations with socio-economic factors through statistical analysis and interactive visualizations."
-authors = [{name = "Babak Nikfar", email = "nikfar@nikintel.com"}]
+description = "Data analysis of London crime patterns (2008-2016) using a 200K-row sample."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Babak Nikfar", email = "nikfar@nikintel.com" },
+]
+keywords = ["data-analysis", "crime", "london", "eda", "visualization"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
 dependencies = [
     "pandas",
     "numpy",
-    "matplotlib", 
+    "matplotlib",
     "seaborn",
     "pyyaml",
-    "jupyter",
-    "pytest",
-    "logging",
 ]
-requires-python = ">=3.12"
 
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "jupyter",
+    "notebook",
+]
+
+[project.urls]
+Homepage = "https://github.com/babaknikfar/london-crime-analysis"
+Repository = "https://github.com/babaknikfar/london-crime-analysis"
+
+# --- Tool configuration ---
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra -q"
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311"]
