@@ -10,6 +10,9 @@ from typing import Any, Dict, Optional
 import yaml
 from dataclasses import dataclass, field
 
+from london_crime.logging_config import get_logger
+
+logger = get_logger(__name__)
 
 class ConfigError(Exception):
     """Custom exception for configuration errors."""
@@ -70,6 +73,8 @@ class ConfigLoader:
         
     def load(self) -> Config:
         """Load configuration from YAML file."""
+        logger.debug(f"Attempting to load config from: {self.config_path}")
+
         if not self.config_path.exists():
             raise ConfigError(f"Configuration file not found: {self.config_path}")
         
@@ -78,6 +83,9 @@ class ConfigLoader:
                 raw_config = yaml.safe_load(f)
         except yaml.YAMLError as e:
             raise ConfigError(f"Error parsing YAML file: {e}")
+
+        logger.info(f"Loaded configuration from: {self.config_path}")
+        logger.debug(f"Project root resolved to: {self.project_root}")
         
         # Build paths configuration
         paths_config = PathsConfig(
@@ -90,6 +98,8 @@ class ConfigLoader:
             reports_dir=self.project_root / raw_config['paths']['reports_dir'],
             logs_dir=self.project_root / raw_config['paths']['logs_dir'],
         )
+
+        logger.debug(f"Project directories ensured: {paths_config.data_dir}, ...")
         
         self.config = Config(
             paths=paths_config,
@@ -98,7 +108,8 @@ class ConfigLoader:
             eda=raw_config.get('eda', {}),
             raw_config=raw_config,
         )
-        
+
+        logger.info("Configuration object successfully built")
         return self.config
     
     def get_config(self) -> Config:
