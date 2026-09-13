@@ -1,0 +1,32 @@
+# London Crime Analysis Configuration
+
+# Paths configuration (relative to project root)
+paths:
+  data_dir: "data"
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  outputs_dir: "outputs"
+  figures_dir: "outputs/figures"
+  reports_dir: "reports"
+  logs_dir: "logs"
+
+
+# Data configuration
+data:
+  raw_filename: "london_crimes.csv"
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  cleaned_filename: "london_crimes_clean.parquet"
+  date_column: "Month"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
+  file: "logs/london_crime.log"
+
+# EDA configuration
+eda:
+  top_n_categories: 10
+  figure_dpi: 200
+  figure_format: "png"
