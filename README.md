@@ -10,13 +10,12 @@
 
 
 ## 📋 Description
-A data engineering and analysis project built on **real, messy, incident-level crime data** from the [Police.uk API](https://data.police.uk/docs/). Unlike curated open-data releases, the Police.uk street-level API reflects the operational reality of police reporting: missing values, nested JSON, inconsistent field types, undocumented HTTP quirks, and rate limits. The project ingests, cleans, and analyzes crime incidents across **Central London** over a **24-month period (2023–2024)**, with a focus on building a robust, reproducible pipeline that treats data quality as a first-class concern.
+A data engineering and analysis project built on **real, messy, incident-level crime data** from the [Police.uk API](https://data.police.uk/docs/). Unlike curated open-data releases, the Police.uk street-level API reflects the operational reality of police reporting: missing values, nested JSON, inconsistent field types, undocumented HTTP quirks, and rate limits. The project ingests, cleans, and analyzes crime incidents across **Central London** over a **12-month period (2025)**, with a focus on building a robust, reproducible pipeline that treats data quality as a first-class concern.
 
 
 ## 🎯 Objectives
 
 - Ingest incident-level crime data from the Police.uk API across multiple Central London search points
-- Build a resilient API client that correctly handles real-world quirks (e.g., `404` responses that mean *"no crimes recorded"*, not *"error"*)
 - Design and document a cleaning pipeline that addresses missing `outcome_status`, blank `persistent_id` fields, nested location objects, and inconsistent types
 - Perform comprehensive EDA on crime categories, spatial distribution, and temporal patterns
 - Produce professional visualizations and a written analysis report for a non-technical audience
@@ -27,15 +26,15 @@ A data engineering and analysis project built on **real, messy, incident-level c
 
 - **Source:** [Police.uk Street-Level Crime API](https://data.police.uk/docs/method/crime-street/)
 - **Granularity:** Individual crime incidents (not aggregated)
-- **Scope:** ~10 Central London search points, 2023-01 through 2024-12
+- **Scope:** Metropolitan Police Service, 2025-01 through 2025-12
 - **Key fields:** `category`, `month`, `location.{latitude, longitude, street.name}`, `outcome_status`, `persistent_id`
-- **Known challenges:** null outcomes, missing `persistent_id`, 404-on-empty-result, ~1-mile fixed search radius, API rate limits
+- **Known challenges:** null outcomes, missing `persistent_id`, ~1-mile fixed search radius
 
 
 ## 🛠️ Tech Stack
 
 - **Language:** Python 3.10+
-- **Core:** pandas, numpy, requests
+- **Core:** pandas, numpy
 - **Visualization:** matplotlib, seaborn
 - **Quality:** pytest, structured logging, pydantic-typed config
 - **Tooling:** pyproject.toml, Git (Conventional Commits)
