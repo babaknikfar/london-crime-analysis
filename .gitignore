@@ -152,16 +152,6 @@ cython_debug/
 *.feather
 *.arff
 
-# Image data
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.bmp
-*.tiff
-*.tif
-*.webp
-*.svg
 
 # Audio data
 *.mp3
@@ -269,12 +259,6 @@ datasets_cache/
 .env.ml
 .env.training
 
-# Large generated files
-generated/
-outputs/
-results/
-predictions/
-submissions/
 
 # ============================================
 # WINDOWS

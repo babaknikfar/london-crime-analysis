@@ -24,6 +24,24 @@ Unlike curated open-data releases, the Police.uk data reflects operational reali
 - Chi-square tests confirm a seasonal pattern (p ≈ 0) and that crime type distribution varies significantly across LSOAs (p ≈ 0)
 
 
+## 📈 Visualizations
+
+### Crime Type Distribution
+![Crime Type Counts](outputs/figures/crime_type_counts.png)
+
+### Monthly Trend
+![Monthly Trend](outputs/figures/monthly_trend.png)
+
+### Top LSOAs by Incident Count
+![Top LSOAs](outputs/figures/top_lsoas.png)
+
+### Anonymization Rate by Crime Type
+![Anonymization Heatmap](outputs/figures/anonymization_heatmap.png)
+
+### Top Reported Locations
+![Top Locations](outputs/figures/top_locations.png)
+
+
 ## 📊 Data Source
 
 - **Source:** [Police.uk bulk download](https://data.police.uk/data/)
