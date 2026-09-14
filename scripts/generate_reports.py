@@ -7,6 +7,9 @@ from london_crime.config import config
 from london_crime.eda import EDA
 from london_crime.logging_config import get_logger
 
+from london_crime.hypothesis_testing import run_all as run_hypotheses
+
+
 logger = get_logger(__name__)
 
 
@@ -77,9 +80,27 @@ def generate_eda_report(df: pd.DataFrame, out_path: Path) -> None:
     logger.info(f"Wrote EDA report: {out_path.relative_to(config.paths.project_root)}")
 
 
+
+def generate_hypothesis_report(df: pd.DataFrame, out_path: Path) -> None:
+    results = run_hypotheses(df)
+    lines = ["# Hypothesis Testing Report", ""]
+    for r in results:
+        lines += [
+            f"## {r.name}",
+            f"- **Statistic:** {r.statistic:.4f}",
+            f"- **p-value:** {r.p_value:.3e}",
+            f"- **Conclusion:** {r.conclusion}",
+            "",
+        ]
+    out_path.write_text("\n".join(lines), encoding="utf-8")
+    logger.info(f"Wrote hypothesis report: {out_path.relative_to(config.paths.project_root)}")
+
+
+
 def main() -> None:
     df = pd.read_parquet(config.paths.processed_data_dir / config.data["cleaned_filename"])
     generate_eda_report(df, config.paths.reports_dir / "eda_report.md")
+    generate_hypothesis_report(df, config.paths.reports_dir / "hypothesis_report.md")
 
 
 if __name__ == "__main__":
