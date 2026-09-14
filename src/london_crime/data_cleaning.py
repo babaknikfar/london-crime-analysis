@@ -100,7 +100,7 @@ class DataCleaner:
 
     def _normalize_empty_strings(self, df: pd.DataFrame) -> pd.DataFrame:
         """Replace empty strings with pd.NA across all object columns."""
-        object_cols = df.select_dtypes(include="object").columns
+        object_cols = df.select_dtypes(include=["object", "str", "string"]).columns
         empty_counts_before = (df[object_cols] == "").sum().sum()
 
         df[object_cols] = df[object_cols].replace("", pd.NA)
